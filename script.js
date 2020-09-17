@@ -5,18 +5,18 @@ let sound_notifications_on;
 // initialize audio object
 ding_audio = new Audio("Ding-sound-effect.mp3");
 
+// Playing a completely silent track of audio is done so that firefox will block the autoplay as soon as you open the site
+// instead of later when the notification sound is supposed to ring, this makes it so the browser shows the option to
+// unblock autoplay for the site.
+new Audio("2-seconds-of-silence.mp3").play();
+
 $.getJSON("sched.json?1", function (data) {
     sched = data;
     $(function() {
         // start update loop
         class_update_loop();
 
-        // set notifications bool according to cookies
-        notifications_on = Boolean(Number(getCookie("notifications_on")));
-        sound_notifications_on = Boolean(Number(getCookie("sound_notifications_on")));
-        // set switches to corresponding positions
-        $("#notifySwitch").prop("checked", notifications_on);
-        $("#soundSwitch").prop("checked", sound_notifications_on);
+        //set event listeners
 
         $("#gear").click(function() {
             $("#settings").modal("show");
@@ -32,9 +32,22 @@ $.getJSON("sched.json?1", function (data) {
         });
 
         $("#soundSwitch").change(function () {
+            if (this.checked) {
+                $("#sound_note").show();
+            } else {
+                $("#sound_note").hide();
+            }
             sound_notifications_on = this.checked;
             setCookie("sound_notifications_on", Number(this.checked), 1000);
         });
+
+        // set notifications bool according to cookies
+        notifications_on = Boolean(Number(getCookie("notifications_on")));
+        sound_notifications_on = Boolean(Number(getCookie("sound_notifications_on")));
+        // set switches to corresponding positions
+        $("#notifySwitch").prop("checked", notifications_on);
+        // .change triggers an event update for the element, allowing for the note to be shown or hidden as needed
+        $("#soundSwitch").prop("checked", sound_notifications_on).change();
 
     });
 });
