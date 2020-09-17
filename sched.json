@@ -1,0 +1,67 @@
+{
+  "active_epoch_range": [1599436800, 1623888000],
+  "default_week_exclusions": {
+    "37": "no_mon",
+    "45": "no_fri",
+    "52": "none",
+    "53": "none",
+    "4": "no_mon",
+    "5": "no_fri",
+    "14": "no_fri",
+    "15": "none",
+    "23": "no_mon",
+    "25": "none"
+  },
+  "day_exclusions": {
+
+  },
+  "day_off_exclusions": [
+    288, 289, 290, 330, 331, 332, 46, 47
+  ],
+  "weeks": {
+    "default": ["none", "a", "b", "c", "a", "b", "none"],
+    "no_mon": ["none", "none", "a", "b", "a", "b", "none"],
+    "no_fri": ["none", "a", "b", "a", "b", "none", "none"],
+    "none": ["none", "none", "none", "none", "none", "none", "none"]
+  },
+  "days": {
+    "a": [
+      ["Period 0", 27000, 30300],
+      ["Passing time", 30300, 30600],
+      ["Period 1", 30600, 37800],
+      ["Passing time", 37800, 38100],
+      ["Period 2", 38100, 45300],
+      ["Lunch", 45300, 47100],
+      ["Passing time", 47100, 47400],
+      ["Period 3", 47400, 54600]
+    ],
+    "b": [
+      ["Period 0", 27000, 30300],
+      ["Passing time", 30300, 30600],
+      ["Period 4", 30600, 37800],
+      ["Passing time", 37800, 38100],
+      ["Period 5", 38100, 45300],
+      ["Lunch", 45300, 47100],
+      ["Passing time", 47100, 47400],
+      ["Period 6", 47400, 54600]
+    ],
+    "c": [
+      ["Period 0", 27000, 30300],
+      ["Passing time", 30300, 30600],
+      ["Period 1", 30600, 33900],
+      ["Passing time", 33900, 34200],
+      ["Period 4", 34200, 37500],
+      ["Passing time", 37500, 37800],
+      ["Period 2", 37800, 41100],
+      ["Passing time", 41100, 41400],
+      ["Period 5", 41400, 44700],
+      ["Passing time", 44700, 45000],
+      ["Lunch", 45000, 46800],
+      ["Passing time", 46800, 47100],
+      ["Period 3", 47100, 50400],
+      ["Passing time", 50400, 50700],
+      ["Period 6", 50700, 54000]
+    ],
+    "none": []
+  }
+}
