@@ -21,15 +21,16 @@ function timer_update_loop(sched_info) {
     let end_date = new Date(midnight + (sched_info.activity[2] * 1000));
     let ends_in_sec = Math.ceil((end_date - current_date) / 1000);
     if (ends_in_sec <= 0) {
+        $("#timer").text('');
+        $("#activity").text('');
         class_update_loop();
-        $("#timer").text();
         return;
     } else if (ends_in_sec < 60) {
         $("#timer").text(ends_in_sec + " seconds left");
     } else if (ends_in_sec < 3600) {
         $("#timer").text(Math.ceil((ends_in_sec / 60)) + " minutes left");
     } else if (ends_in_sec <= 86400) {
-        let hours_left = Math.ceil(ends_in_sec / 3600);
+        let hours_left = Math.floor(ends_in_sec / 3600);
         let minutes_left = Math.ceil((ends_in_sec % 3600) / 60);
         if (minutes_left > 0) {
             $("#timer").text(hours_left + " hour and " + minutes_left + " minutes left");
@@ -84,7 +85,7 @@ dayOfYear = date => Math.floor((date - new Date(date.getFullYear(), 0, 0)) / (10
 function getSecondsSinceMidnight(d) {
     let e = new Date(d);
     e.setHours(0,0,0,0);
-    return Math.floor((d - e)/1000);
+    return Math.ceil((d - e)/1000);
 }
 
 Date.prototype.getWeek = function() {
