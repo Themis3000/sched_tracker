@@ -13,12 +13,12 @@ function class_update_loop() {
         // If there's an ongoing activity
         $("body").animate({backgroundColor: sched_info.activity[3]}, 1000);
         $("#activity").text(sched_info.activity[0]);
-        timer_update_loop(sched_info.activity);
+        timer_update_loop(sched_info.activity[2]);
     } else if (sched_info.next_activity !== undefined) {
         // if there's a next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text(sched_info.next_activity[0] + " starting in");
-        timer_update_loop(sched_info.next_activity);
+        timer_update_loop(sched_info.next_activity[1], false);
     } else {
         // if there's no next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
@@ -27,30 +27,35 @@ function class_update_loop() {
     }
 }
 
-function timer_update_loop(activity) {
+function timer_update_loop(to_time, add_left=true) {
     let current_date = new Date();
     let midnight = new Date().setHours(0, 0, 0, 0);
-    let end_date = new Date(midnight + (activity[2] * 1000));
+    let end_date = new Date(midnight + (to_time * 1000));
     let ends_in_sec = Math.ceil((end_date - current_date) / 1000);
+    let timer_str = "";
     if (ends_in_sec <= 0) {
         $("#timer").text('');
         $("#activity").text('');
         class_update_loop();
         return;
     } else if (ends_in_sec < 60) {
-        $("#timer").text(ends_in_sec + " seconds left");
+        timer_str = ends_in_sec + " seconds";
     } else if (ends_in_sec < 3600) {
-        $("#timer").text(Math.ceil((ends_in_sec / 60)) + " minutes left");
+        timer_str = Math.ceil((ends_in_sec / 60)) + " minutes";
     } else if (ends_in_sec <= 86400) {
         let hours_left = Math.floor(ends_in_sec / 3600);
         let minutes_left = Math.ceil((ends_in_sec % 3600) / 60);
-        if (minutes_left > 0) {
-            $("#timer").text(hours_left + " hour and " + minutes_left + " minutes left");
+        if (minutes_left === 60) {
+            timer_str = (hours_left + 1) + " hours";
+        } else if (minutes_left > 0) {
+            timer_str = hours_left + " hour and " + minutes_left + " minutes";
         } else {
-            $("#timer").text(hours_left + " hours left");
+            timer_str = hours_left + " hours";
         }
     }
-    setTimeout(function() {timer_update_loop(activity)}, 1000);
+    if (add_left) {timer_str += " left"}
+    $("#timer").text(timer_str);
+    setTimeout(function() {timer_update_loop(to_time, add_left)}, 1000);
 }
 
 function get_sched_info() {
@@ -76,15 +81,19 @@ function get_sched_info() {
             // gets the current day of the week
             day = sched["days"][week[date.getDay()]];
             // gets current hour, if any
-            for (const [index, hour] of day.entries()) {
-                if (hour[1] <= seconds_since_midnight && seconds_since_midnight <= hour[2]) {
-                    activity = hour;
-                    next_activity = day[index + 1];
+            for (const entry of day) {
+                if (entry[1] <= seconds_since_midnight && seconds_since_midnight <= entry[2]) {
+                    activity = entry;
                     break;
                 }
             }
-            if (day[0][1] > seconds_since_midnight) {
-                next_activity = day[0];
+            // find next nearest activity of the day
+            let temp_activity = ["temp", 1000000];
+            for (const entry of day) {
+                if (entry[1] > seconds_since_midnight && temp_activity[1] > entry[1]) {
+                    temp_activity = entry;
+                    next_activity = entry;
+                }
             }
         }
     } else {
