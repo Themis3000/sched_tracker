@@ -1,5 +1,7 @@
 {
   "active_epoch_range": [1599436800, 1623888000],
+  "no_activity_color": "#00ed4b",
+  "default_color": "#00a2ed",
   "default_week_exclusions": {
     "37": "no_mon",
     "45": "no_fri",
@@ -26,41 +28,41 @@
   },
   "days": {
     "a": [
-      ["Period 0", 27000, 30300],
-      ["Passing time", 30300, 30600],
-      ["Period 1", 30600, 37800],
-      ["Passing time", 37800, 38100],
-      ["Period 2", 38100, 45300],
-      ["Lunch", 45300, 47100],
-      ["Passing time", 47100, 47400],
-      ["Period 3", 47400, 54600]
+      ["Period 0", 27000, 30300, "#00a2ed"],
+      ["Passing time", 30300, 30600, "#00ed4b"],
+      ["Period 1", 30600, 37800, "#00a2ed"],
+      ["Passing time", 37800, 38100, "#00ed4b"],
+      ["Period 2", 38100, 45300, "#00a2ed"],
+      ["Lunch", 45300, 47100, "#00ed4b"],
+      ["Passing time", 47100, 47400, "#00ed4b"],
+      ["Period 3", 47400, 54600, "#00a2ed"]
     ],
     "b": [
-      ["Period 0", 27000, 30300],
-      ["Passing time", 30300, 30600],
-      ["Period 4", 30600, 37800],
-      ["Passing time", 37800, 38100],
-      ["Period 5", 38100, 45300],
-      ["Lunch", 45300, 47100],
-      ["Passing time", 47100, 47400],
-      ["Period 6", 47400, 54600]
+      ["Period 0", 27000, 30300, "#00a2ed"],
+      ["Passing time", 30300, 30600, "#00ed4b"],
+      ["Period 4", 30600, 37800, "#00a2ed"],
+      ["Passing time", 37800, 38100, "#00ed4b"],
+      ["Period 5", 38100, 45300, "#00a2ed"],
+      ["Lunch", 45300, 47100, "#00ed4b"],
+      ["Passing time", 47100, 47400, "#00ed4b"],
+      ["Period 6", 47400, 54600, "#00a2ed"]
     ],
     "c": [
-      ["Period 0", 27000, 30300],
-      ["Passing time", 30300, 30600],
-      ["Period 1", 30600, 33900],
-      ["Passing time", 33900, 34200],
-      ["Period 4", 34200, 37500],
-      ["Passing time", 37500, 37800],
-      ["Period 2", 37800, 41100],
-      ["Passing time", 41100, 41400],
-      ["Period 5", 41400, 44700],
-      ["Passing time", 44700, 45000],
-      ["Lunch", 45000, 46800],
-      ["Passing time", 46800, 47100],
-      ["Period 3", 47100, 50400],
-      ["Passing time", 50400, 50700],
-      ["Period 6", 50700, 54000]
+      ["Period 0", 27000, 30300, "#00a2ed"],
+      ["Passing time", 30300, 30600, "#00ed4b"],
+      ["Period 1", 30600, 33900, "#00a2ed"],
+      ["Passing time", 33900, 34200, "#00ed4b"],
+      ["Period 4", 34200, 37500, "#00a2ed"],
+      ["Passing time", 37500, 37800, "#00ed4b"],
+      ["Period 2", 37800, 41100, "#00a2ed"],
+      ["Passing time", 41100, 41400, "#00ed4b"],
+      ["Period 5", 41400, 44700, "#00a2ed"],
+      ["Passing time", 44700, 45000, "#00ed4b"],
+      ["Lunch", 45000, 46800, "#00ed4b"],
+      ["Passing time", 46800, 47100, "#00ed4b"],
+      ["Period 3", 47100, 50400, "#00a2ed"],
+      ["Passing time", 50400, 50700, "#00ed4b"],
+      ["Period 6", 50700, 54000, "#00a2ed"]
     ],
     "none": []
   }
