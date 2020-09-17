@@ -10,14 +10,17 @@ $.getJSON("sched.json", function (data) {
 function class_update_loop() {
     let sched_info = get_sched_info();
     if (sched_info.activity !== undefined) {
+        // If there's an ongoing activity
         $("body").animate({backgroundColor: sched_info.activity[3]}, 1000);
         $("#activity").text(sched_info.activity[0]);
         timer_update_loop(sched_info.activity);
     } else if (sched_info.next_activity !== undefined) {
+        // if there's a next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text(sched_info.next_activity[0] + " starting in");
         timer_update_loop(sched_info.next_activity);
     } else {
+        // if there's no next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text("No current class!");
         setTimeout(class_update_loop, 10000);
