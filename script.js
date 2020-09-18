@@ -1,9 +1,41 @@
 let sched;
+let notifications_on;
+let sound_notifications_on;
+
+// initialize audio object
+ding_audio = new Audio("Ding-sound-effect.mp3");
 
 $.getJSON("sched.json", function (data) {
     sched = data;
     $(function() {
+        // start update loop
         class_update_loop();
+
+        // set notifications bool according to switch
+        notifications_on = $("#notifySwitch").prop("checked");
+        sound_notifications_on = $("#soundSwitch").prop("checked");
+
+        $("#gear").click(function() {
+            $("#settings").modal("show");
+        });
+
+        $("#notifySwitch").change(function () {
+            if (this.checked) {
+                // Check if perms are granted for notifications, if they aren't request permission
+                if (Notification.permission !== "granted") {
+                    Notification.requestPermission();
+                }
+                notifications_on = true;
+            } else {
+                // Notifications are turned off
+                notifications_on = false;
+            }
+        });
+
+        $("#soundSwitch").change(function () {
+            sound_notifications_on = this.checked;
+        });
+
     });
 });
 
@@ -14,6 +46,10 @@ function class_update_loop() {
         $("body").animate({backgroundColor: sched_info.activity[3]}, 1000);
         $("#activity").text(sched_info.activity[0]);
         timer_update_loop(sched_info.activity[2]);
+        if (sound_notifications_on)
+            ding_audio.play();
+        if (notifications_on)
+            new Notification(sched_info.activity[0] + " started");
     } else if (sched_info.next_activity !== undefined) {
         // if there's a next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
