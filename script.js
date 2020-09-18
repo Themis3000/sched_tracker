@@ -5,7 +5,7 @@ let sound_notifications_on;
 // initialize audio object
 ding_audio = new Audio("Ding-sound-effect.mp3");
 
-$.getJSON("sched.json", function (data) {
+$.getJSON("sched.json?1", function (data) {
     sched = data;
     $(function() {
         // start update loop
