@@ -5,6 +5,7 @@
     <title>sw time tracker</title>
     <script src="jquery-3.5.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="jquery.color-2.2.0.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="bootstrap.bundle.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="script.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
@@ -14,6 +15,30 @@
         <h1 id="activity"></h1>
         <h4 id="timer"></h4>
     </div>
-    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 333333 333333" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"><path d="M68874 6187l23904 23904C58677 54330 35942 93113 33434 137413H1C2341 83919 28753 36778 68874 6187zm195585 0c39953 30591 66365 77732 68873 131226h-33433c-2508-44299-25409-83082-59177-107322l23737-23904zm-72717 22568l-1 11367c47811 11367 75226 54330 75226 105649v83583l33433 33434v16716l-267467 1v-16717l33433-33433v-83583c0-51488 27248-94283 75225-105650V28755c0-13876 11201-25076 25076-25076 13874 0 25075 11201 25075 25076zm-58676 267467h66867c0 4681-836 9027-2507 13039-4347 10030-13206 17385-24072 19726-2173 501-4346 668-6687 669-18556 0-33433-15046-33601-33433z" fill="#ffffff"/></svg>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Settings here
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
