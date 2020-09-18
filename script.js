@@ -4,6 +4,9 @@ $.getJSON("sched.json", function (data) {
     sched = data;
     $(function() {
         class_update_loop();
+        $("#gear").click(function() {
+            $("#settings").modal("show");
+        });
     });
 });
 
