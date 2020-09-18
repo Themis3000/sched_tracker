@@ -6,7 +6,7 @@
     <script src="jquery-3.5.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="jquery.color-2.2.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="bootstrap.bundle.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="script.js" type="text/javascript" charset="utf-8"></script>
+    <script src="script.js?1" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,7 +15,8 @@
         <h1 id="activity"></h1>
         <h4 id="timer"></h4>
     </div>
-    <!-- Button trigger modal -->
+
+    <!-- Gear icon -->
     <img id="gear" width="64px" height="64px" src="gear.svg" alt="gear icon" style="padding: 15px"/>
 
     <!-- Modal -->
@@ -23,17 +24,26 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="modalLabel">Settings and info</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Settings here
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="notifySwitch">
+                        <label class="custom-control-label" for="notifySwitch">Notifications</label>
+                    </div>
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="soundSwitch">
+                        <label class="custom-control-label" for="soundSwitch">Sound notifications</label>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <p>Made by <a href="https://github.com/Themis3000" target="_blank">Themi</a></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
