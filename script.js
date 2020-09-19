@@ -11,29 +11,29 @@ $.getJSON("sched.json?1", function (data) {
         // start update loop
         class_update_loop();
 
-        // set notifications bool according to switch
-        notifications_on = $("#notifySwitch").prop("checked");
-        sound_notifications_on = $("#soundSwitch").prop("checked");
+        // set notifications bool according to cookies
+        notifications_on = Boolean(Number(getCookie("notifications_on")));
+        sound_notifications_on = Boolean(Number(getCookie("sound_notifications_on")));
+        // set switches to corresponding positions
+        $("#notifySwitch").prop("checked", notifications_on);
+        $("#soundSwitch").prop("checked", sound_notifications_on);
 
         $("#gear").click(function() {
             $("#settings").modal("show");
         });
 
         $("#notifySwitch").change(function () {
-            if (this.checked) {
-                // Check if perms are granted for notifications, if they aren't request permission
-                if (Notification.permission !== "granted") {
-                    Notification.requestPermission();
-                }
-                notifications_on = true;
-            } else {
-                // Notifications are turned off
-                notifications_on = false;
+            // Check if perms are granted for notifications, if they aren't request permission
+            if (this.checked && Notification.permission !== "granted") {
+                Notification.requestPermission();
             }
+            notifications_on = this.checked;
+            setCookie("notifications_on", Number(this.checked), 1000);
         });
 
         $("#soundSwitch").change(function () {
             sound_notifications_on = this.checked;
+            setCookie("sound_notifications_on", Number(this.checked), 1000);
         });
 
     });
@@ -161,4 +161,26 @@ Date.prototype.getWeek = function() {
     // Adjust to Thursday in week 1 and count number of weeks from date to week1.
     return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
         - 3 + (week1.getDay() + 6) % 7) / 7);
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
