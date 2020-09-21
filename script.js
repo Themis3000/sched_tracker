@@ -62,7 +62,7 @@ function class_update_loop() {
         $("#activity").text(sched_info.activity[0]);
         if (sched_info.next_activity !== undefined)
             $("#next_class").text("Next: " + sched_info.next_activity[0]);
-        timer_update_loop(sched_info.activity[2]);
+        timer_update_loop(sched_info.activity[2], sched_info.activity[0], true);
         if (sound_notifications_on)
             ding_audio.play();
         if (notifications_on)
@@ -72,7 +72,7 @@ function class_update_loop() {
         // if there's a next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text(sched_info.next_activity[0] + " starting in");
-        timer_update_loop(sched_info.next_activity[1], false);
+        timer_update_loop(sched_info.next_activity[1], sched_info.activity[0], false);
         if (sound_notifications_on && last_class !== undefined)
             ding_audio.play();
         if (notifications_on && last_class !== undefined)
@@ -85,12 +85,13 @@ function class_update_loop() {
     }
 }
 
-function timer_update_loop(to_time, add_left=true) {
+function timer_update_loop(to_time, activity, to_start=true) {
     let current_date = new Date();
     let midnight = new Date().setHours(0, 0, 0, 0);
     let end_date = new Date(midnight + (to_time * 1000));
     let ends_in_sec = Math.ceil((end_date - current_date) / 1000);
     let timer_str = "";
+    let title_str = "";
     if (ends_in_sec <= 0) {
         $("#timer").text('');
         $("#activity").text('');
@@ -99,8 +100,11 @@ function timer_update_loop(to_time, add_left=true) {
         return;
     } else if (ends_in_sec < 60) {
         timer_str = ends_in_sec + " seconds";
+        title_str = ends_in_sec + "s";
     } else if (ends_in_sec < 3600) {
-        timer_str = Math.ceil((ends_in_sec / 60)) + " minutes";
+        let minutes_left = Math.ceil((ends_in_sec / 60));
+        timer_str = minutes_left + " minutes";
+        title_str = minutes_left + "m";
     } else if (ends_in_sec <= 86400) {
         let hours_left = Math.floor(ends_in_sec / 3600);
         let minutes_left = Math.ceil((ends_in_sec % 3600) / 60);
@@ -111,10 +115,16 @@ function timer_update_loop(to_time, add_left=true) {
         } else {
             timer_str = hours_left + " hours";
         }
+        title_str = `${hours_left}h ${minutes_left}m`;
     }
-    if (add_left) {timer_str += " left"}
-    $("#timer").text(timer_str);
-    setTimeout(function() {timer_update_loop(to_time, add_left)}, 1000);
+    if (to_start) {
+        $("#timer").text(timer_str + " left");
+        document.title = `${title_str} left of ${activity}`;
+    } else {
+        $("#timer").text(timer_str);
+        document.title = `${title_str} till ${activity}`;
+    }
+    setTimeout(function() {timer_update_loop(to_time, activity, to_start)}, 1000);
 }
 
 function get_sched_info() {
