@@ -108,14 +108,16 @@ function timer_update_loop(to_time, activity, to_start=true) {
     } else if (ends_in_sec <= 86400) {
         let hours_left = Math.floor(ends_in_sec / 3600);
         let minutes_left = Math.ceil((ends_in_sec % 3600) / 60);
+        title_str = `${hours_left}h ${minutes_left}m`;
         if (minutes_left === 60) {
+            // corrects for when there is more than an hour and 60 minutes
             timer_str = (hours_left + 1) + " hours";
+            title_str = `${hours_left + 1}h`;
         } else if (minutes_left > 0) {
             timer_str = hours_left + " hour and " + minutes_left + " minutes";
         } else {
             timer_str = hours_left + " hours";
         }
-        title_str = `${hours_left}h ${minutes_left}m`;
     }
     if (to_start) {
         $("#timer").text(timer_str + " left");
