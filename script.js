@@ -72,7 +72,7 @@ function class_update_loop() {
         // if there's a next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text(sched_info.next_activity[0] + " starting in");
-        timer_update_loop(sched_info.next_activity[1], sched_info.activity[0], false);
+        timer_update_loop(sched_info.next_activity[1], sched_info.next_activity[0], false);
         if (sound_notifications_on && last_class !== undefined)
             ding_audio.play();
         if (notifications_on && last_class !== undefined)
