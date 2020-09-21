@@ -1,6 +1,8 @@
 let sched;
 let notifications_on;
 let sound_notifications_on;
+let last_class;
+let sched_info;
 
 // initialize audio object
 ding_audio = new Audio("Ding-sound-effect.mp3");
@@ -10,7 +12,7 @@ ding_audio = new Audio("Ding-sound-effect.mp3");
 // unblock autoplay for the site.
 new Audio("2-seconds-of-silence.mp3").play();
 
-$.getJSON("sched.json?1", function (data) {
+$.getJSON("sched.json?2", function (data) {
     sched = data;
     $(function() {
         // start update loop
@@ -53,21 +55,28 @@ $.getJSON("sched.json?1", function (data) {
 });
 
 function class_update_loop() {
-    let sched_info = get_sched_info();
+    sched_info = get_sched_info();
     if (sched_info.activity !== undefined) {
         // If there's an ongoing activity
         $("body").animate({backgroundColor: sched_info.activity[3]}, 1000);
         $("#activity").text(sched_info.activity[0]);
+        if (sched_info.next_activity !== undefined)
+            $("#next_class").text("Next: " + sched_info.next_activity[0]);
         timer_update_loop(sched_info.activity[2]);
         if (sound_notifications_on)
             ding_audio.play();
         if (notifications_on)
             new Notification(sched_info.activity[0] + " started");
+        last_class = sched_info.activity;
     } else if (sched_info.next_activity !== undefined) {
         // if there's a next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text(sched_info.next_activity[0] + " starting in");
         timer_update_loop(sched_info.next_activity[1], false);
+        if (sound_notifications_on && last_class !== undefined)
+            ding_audio.play();
+        if (notifications_on && last_class !== undefined)
+            new Notification(last_class[0] + " has ended");
     } else {
         // if there's no next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
@@ -85,6 +94,7 @@ function timer_update_loop(to_time, add_left=true) {
     if (ends_in_sec <= 0) {
         $("#timer").text('');
         $("#activity").text('');
+        $("#next_class").text('');
         class_update_loop();
         return;
     } else if (ends_in_sec < 60) {
