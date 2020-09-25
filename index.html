@@ -7,15 +7,17 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'UA-178398967-1');
+        //tracks an idle event for when user is idle for 20 seconds. This is counted as an interaction event since I want
+        //this event to trigger a session being recorded
+        setTimeout(gtag('event', 'idle-20sec', {'event_category': 'idle'}), 20000);
     </script>
     <meta charset="UTF-8">
     <title>sw time tracker</title>
     <script src="jquery-3.5.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="jquery.color-2.2.0.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="bootstrap.bundle.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="script.js?7" type="text/javascript" charset="utf-8"></script>
+    <script src="script.js?8" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" href="bootstrap.min.css">
     <link rel="stylesheet" href="style.css?2">
 </head>

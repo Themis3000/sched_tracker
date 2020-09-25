@@ -12,6 +12,18 @@ ding_audio = new Audio("Ding-sound-effect.mp3");
 // unblock autoplay for the site.
 new Audio("2-seconds-of-silence.mp3").play();
 
+let open_date = new Date();
+// logs time spent on page on unload
+$(window).on("unload", function(e) {
+    let time_spent_alive = Math.round((open_date.getTime() - new Date.getTime()) / 1000);
+    gtag('event', 'timing_complete', {
+        'name': 'page_alive_timing',
+        'value': time_spent_alive,
+        'event_category': 'page_alive_timing',
+        'transport_type': 'beacon'
+    });
+});
+
 $.getJSON("sched.json?2", function (data) {
     sched = data;
     $(function() {
