@@ -10,7 +10,7 @@
         gtag('config', 'UA-178398967-1');
         //tracks an idle event for when user is idle for 20 seconds. This is counted as an interaction event since I want
         //this event to trigger a session being recorded
-        setTimeout(gtag('event', 'idle-20sec', {'event_category': 'idle'}), 20000);
+        setTimeout(function () {gtag('event', 'idle-20sec', {'event_category': 'idle'})}, 20000);
     </script>
     <meta charset="UTF-8">
     <title>sw time tracker</title>
