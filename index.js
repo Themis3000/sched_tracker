@@ -5,16 +5,18 @@ let last_class;
 let sched_info;
 
 // initialize audio object
+//todo UPDATE THE SOURCE OF THIS
 ding_audio = new Audio("Ding-sound-effect.mp3");
 
 // Playing a completely silent track of audio is done so that firefox will block the autoplay as soon as you open the site
 // instead of later when the notification sound is supposed to ring, this makes it so the browser shows the option to
 // unblock autoplay for the site.
+//todo UPDATE THE SOURCE OF THIS
 new Audio("2-seconds-of-silence.mp3").play();
 
 let open_date = new Date();
 // logs time spent on page on unload
-$(window).on("unload", function(e) {
+window.addEventListener('beforeunload', function() {
     let time_spent_alive = Math.round((open_date.getTime() - new Date.getTime()) / 1000);
     gtag('event', 'timing_complete', {
         'name': 'page_alive_timing',
@@ -23,7 +25,7 @@ $(window).on("unload", function(e) {
         'transport_type': 'beacon'
     });
 });
-
+//todo UPDATE THE SOURCE OF THIS
 $.getJSON("sched.json?2", function (data) {
     sched = data;
     $(function() {
