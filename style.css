@@ -13,7 +13,6 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
-/*
-blue color: #00a2ed
-green color: #00ed4b
-*/
+.class-alias {
+    width: 60%;
+}
