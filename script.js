@@ -93,6 +93,7 @@ function class_update_loop() {
         // if there's no next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text("No current class!");
+        document.title = "No current class!";
         setTimeout(class_update_loop, 10000);
     }
 }
