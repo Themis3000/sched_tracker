@@ -3,6 +3,9 @@ let notifications_on;
 let sound_notifications_on;
 let last_class;
 let sched_info;
+let class_update_loop_timeout;
+let timer_update_loop_timeout;
+let activity_aliases = {};
 
 // initialize audio object
 ding_audio = new Audio("Ding-sound-effect.mp3");
@@ -12,26 +15,27 @@ ding_audio = new Audio("Ding-sound-effect.mp3");
 // unblock autoplay for the site.
 new Audio("2-seconds-of-silence.mp3").play();
 
-let open_date = new Date();
-// logs time spent on page on unload
-$(window).on("unload", function(e) {
-    let time_spent_alive = Math.round((open_date.getTime() - new Date.getTime()) / 1000);
-    gtag('event', 'timing_complete', {
-        'name': 'page_alive_timing',
-        'value': time_spent_alive,
-        'event_category': 'page_alive_timing',
-        'transport_type': 'beacon'
-    });
-});
-
-$.getJSON("sched.json?2", function (data) {
+$.getJSON("sched.json?3", function (data) {
     sched = data;
     $(function() {
+        //create alias settings based on config
+        for (let activity of sched["aliasable_activities"]) {
+            let input = `<input class="form-control form-control-sm class-alias" type="text" name="${activity}" placeholder="${activity}">`;
+            $("#alias-form").append(input);
+        }
+
+        // get class aliases and set values in settings form
+        let aliases_cookie = getCookie("aliases")
+        if (aliases_cookie.length !== 0) {
+            activity_aliases = JSON.parse(aliases_cookie);
+            for (const [name, value] of Object.entries(activity_aliases))
+                $(`#alias-form input[name='${name}']`).val(value);
+        }
+
         // start update loop
-        class_update_loop();
+        class_update_loop_timeout = class_update_loop(true);
 
         //set event listeners
-
         $("#gear").click(function() {
             $("#settings").modal("show");
         });
@@ -55,46 +59,57 @@ $.getJSON("sched.json?2", function (data) {
             setCookie("sound_notifications_on", Number(this.checked), 1000);
         });
 
+        $('#settings').on('hide.bs.modal', function (e) {
+            for (let form_element of $("#alias-form").serializeArray())
+                activity_aliases[form_element.name] = form_element.value;
+            restartLoops();
+            setCookie("aliases", JSON.stringify(activity_aliases), 1000);
+        });
+
         // set notifications bool according to cookies
         notifications_on = Boolean(Number(getCookie("notifications_on")));
         sound_notifications_on = Boolean(Number(getCookie("sound_notifications_on")));
         // set switches to corresponding positions
         $("#notifySwitch").prop("checked", notifications_on);
-        // .change triggers an event update for the element, allowing for the note to be shown or hidden as needed
+        // change triggers an event update for the element, allowing for the note to be shown or hidden as needed
         $("#soundSwitch").prop("checked", sound_notifications_on).change();
 
     });
 });
 
-function class_update_loop() {
+function class_update_loop(notify_on_first_iter=false) {
     sched_info = get_sched_info();
     if (sched_info.activity !== undefined) {
         // If there's an ongoing activity
         $("body").animate({backgroundColor: sched_info.activity[3]}, 1000);
-        $("#activity").text(sched_info.activity[0]);
+        $("#activity").text(getAlias(sched_info.activity[0]));
         if (sched_info.next_activity !== undefined)
-            $("#next_class").text("Next: " + sched_info.next_activity[0]);
-        timer_update_loop(sched_info.activity[2], sched_info.activity[0], true);
-        if (sound_notifications_on)
-            ding_audio.play();
-        if (notifications_on)
-            new Notification(sched_info.activity[0] + " started");
+            $("#next_class").text("Next: " + getAlias(sched_info.next_activity[0]));
+        timer_update_loop_timeout = timer_update_loop(sched_info.activity[2], sched_info.activity[0], true);
+        if (!notify_on_first_iter) {
+            if (sound_notifications_on)
+                ding_audio.play();
+            if (notifications_on)
+                new Notification(sched_info.activity[0] + " started");
+        }
         last_class = sched_info.activity;
     } else if (sched_info.next_activity !== undefined) {
         // if there's a next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
-        $("#activity").text(sched_info.next_activity[0] + " starting in");
-        timer_update_loop(sched_info.next_activity[1], sched_info.next_activity[0], false);
-        if (sound_notifications_on && last_class !== undefined)
-            ding_audio.play();
-        if (notifications_on && last_class !== undefined)
-            new Notification(last_class[0] + " has ended");
+        $("#activity").text(getAlias(sched_info.next_activity[0]) + " starting in");
+        timer_update_loop_timeout = timer_update_loop(sched_info.next_activity[1], sched_info.next_activity[0], false);
+        if (!notify_on_first_iter) {
+            if (sound_notifications_on && last_class !== undefined)
+                ding_audio.play();
+            if (notifications_on && last_class !== undefined)
+                new Notification(last_class[0] + " has ended");
+        }
     } else {
         // if there's no next activity and no ongoing activity
         $("body").animate({backgroundColor: sched["no_activity_color"]}, 1000);
         $("#activity").text("No current class!");
         document.title = "No current class!";
-        setTimeout(class_update_loop, 10000);
+        class_update_loop_timeout = setTimeout(class_update_loop, 10000);
     }
 }
 
@@ -109,7 +124,7 @@ function timer_update_loop(to_time, activity, to_start=true) {
         $("#timer").text('');
         $("#activity").text('');
         $("#next_class").text('');
-        class_update_loop();
+        class_update_loop_timeout = class_update_loop();
         return;
     } else if (ends_in_sec < 60) {
         timer_str = ends_in_sec + " seconds";
@@ -139,7 +154,7 @@ function timer_update_loop(to_time, activity, to_start=true) {
         $("#timer").text(timer_str);
         document.title = `${title_str} till ${activity}`;
     }
-    setTimeout(function() {timer_update_loop(to_time, activity, to_start)}, 1000);
+    timer_update_loop_timeout = setTimeout(function() {timer_update_loop(to_time, activity, to_start)}, 1000);
 }
 
 function get_sched_info() {
@@ -191,6 +206,20 @@ function get_sched_info() {
     };
 }
 
+function getAlias(activity_name) {
+    if (activity_name in activity_aliases && activity_aliases[activity_name].length !== 0) {
+        return activity_aliases[activity_name];
+    }
+    return activity_name
+}
+
+// restarts the main loop, forcing for changes to be applied immediately
+function restartLoops() {
+    clearInterval(class_update_loop_timeout);
+    clearInterval(timer_update_loop_timeout);
+    class_update_loop(true);
+}
+
 dayOfYear = date => Math.floor((date - new Date(date.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
 
 function getSecondsSinceMidnight(d) {
@@ -215,7 +244,7 @@ function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=Lax;path=/";
 }
 
 function getCookie(cname) {

@@ -2,6 +2,7 @@
   "active_epoch_range": [1599436800, 1623888000],
   "no_activity_color": "#00ed4b",
   "default_color": "#00a2ed",
+  "aliasable_activities": ["Period 0", "Period 1", "Period 2", "Period 3", "Period 4", "Period 5", "Period 6"],
   "default_week_exclusions": {
     "37": "no_mon",
     "45": "no_fri",
