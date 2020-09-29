@@ -149,10 +149,10 @@ function timer_update_loop(to_time, activity, to_start=true) {
     }
     if (to_start) {
         $("#timer").text(timer_str + " left");
-        document.title = `${title_str} left of ${activity}`;
+        document.title = `${title_str} left of ${getAlias(activity)}`;
     } else {
         $("#timer").text(timer_str);
-        document.title = `${title_str} till ${activity}`;
+        document.title = `${title_str} till ${getAlias(activity)}`;
     }
     timer_update_loop_timeout = setTimeout(function() {timer_update_loop(to_time, activity, to_start)}, 1000);
 }
