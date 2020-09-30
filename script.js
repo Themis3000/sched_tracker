@@ -20,8 +20,12 @@ $.getJSON("sched.json?3", function (data) {
     $(function() {
         //create alias settings based on config
         for (let activity of sched["aliasable_activities"]) {
-            let input = `<input class="form-control form-control-sm class-alias" type="text" name="${activity}" placeholder="${activity}">`;
-            $("#alias-form").append(input);
+            $("#alias-form").append(`<div class="form-group row class-alias-group">
+                                         <label for="${activity}" class="col-sm-2 col-form-label class-alias-label">${activity}</label>
+                                         <div class="col-sm-10">
+                                             <input class="form-control form-control-sm" id="class-alias${activity}" type="text" name="${activity}" placeholder="${activity}">
+                                         </div>
+                                     </div>`);
         }
 
         // get class aliases and set values in settings form

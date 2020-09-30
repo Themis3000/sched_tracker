@@ -13,6 +13,13 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
-.class-alias {
-    width: 60%;
+.class-alias-group {
+    padding-bottom: 0;
+    margin-bottom: .5rem;
+}
+
+.class-alias-label {
+    padding-bottom: 0;
+    padding-top: 0;
+    padding-right: 0;
 }
