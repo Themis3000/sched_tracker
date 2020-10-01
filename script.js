@@ -94,7 +94,7 @@ function class_update_loop(notify_on_first_iter=false) {
             if (sound_notifications_on)
                 ding_audio.play();
             if (notifications_on)
-                new Notification(sched_info.activity[0] + " started");
+                new Notification(getAlias(sched_info.activity[0]) + " started");
         }
         last_class = sched_info.activity;
     } else if (sched_info.next_activity !== undefined) {
@@ -106,7 +106,7 @@ function class_update_loop(notify_on_first_iter=false) {
             if (sound_notifications_on && last_class !== undefined)
                 ding_audio.play();
             if (notifications_on && last_class !== undefined)
-                new Notification(last_class[0] + " has ended");
+                new Notification(getAlias(last_class[0]) + " has ended");
         }
     } else {
         // if there's no next activity and no ongoing activity
