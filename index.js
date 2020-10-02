@@ -8,14 +8,12 @@ let timer_update_loop_timeout;
 let activity_aliases = {};
 
 // initialize audio object
-//todo UPDATE THE SOURCE OF THIS
-ding_audio = new Audio("Ding-sound-effect.mp3");
+ding_audio = new Audio("dependencies/Ding-sound-effect.mp3");
 
 // Playing a completely silent track of audio is done so that firefox will block the autoplay as soon as you open the site
 // instead of later when the notification sound is supposed to ring, this makes it so the browser shows the option to
 // unblock autoplay for the site.
-//todo UPDATE THE SOURCE OF THIS
-new Audio("2-seconds-of-silence.mp3").play();
+new Audio("dependencies/2-seconds-of-silence.mp3").play();
 
 $.getJSON("sched.json?3", function (data) {
     sched = data;
