@@ -15,7 +15,7 @@ ding_audio = new Audio("Ding-sound-effect.mp3");
 // unblock autoplay for the site.
 new Audio("2-seconds-of-silence.mp3").play();
 
-$.getJSON("sched.json?3", function (data) {
+$.getJSON("sched.json?4", function (data) {
     sched = data;
     $(function() {
         //create alias settings based on config
@@ -174,7 +174,7 @@ function get_sched_info() {
     // Check if school is ongoing
     if (sched["active_epoch_range"][0] <= Date.now() / 1000 <= sched["active_epoch_range"][1]) {
         // Check if the day is a special day off
-        if (!(day_of_year in sched["day_off_exclusions"])) {
+        if (!(sched["day_off_exclusions"].includes(day_of_year))) {
             // Checks if week is a non default week and set the correct week
             if (week_of_year in sched["default_week_exclusions"]) {
                 week = sched["weeks"][sched["default_week_exclusions"][week_of_year]];
@@ -182,7 +182,11 @@ function get_sched_info() {
                 week = sched["weeks"]["default"];
             }
             // gets the current day of the week
-            day = sched["days"][week[date.getDay()]];
+            if (day_of_year in sched["day_exclusions"]) {
+                day = sched["days"][sched["day_exclusions"][day_of_year]];
+            } else {
+                day = sched["days"][week[date.getDay()]];
+            }
             // gets current hour, if any
             for (const entry of day) {
                 if (entry[1] <= seconds_since_midnight && seconds_since_midnight <= entry[2]) {
