@@ -8,12 +8,12 @@ let timer_update_loop_timeout;
 let activity_aliases = {};
 
 // initialize audio object
-ding_audio = new Audio("Ding-sound-effect.mp3");
+ding_audio = new Audio("sounds/Ding-sound-effect.mp3");
 
 // Playing a completely silent track of audio is done so that firefox will block the autoplay as soon as you open the site
 // instead of later when the notification sound is supposed to ring, this makes it so the browser shows the option to
 // unblock autoplay for the site.
-new Audio("2-seconds-of-silence.mp3").play();
+new Audio("sounds/2-seconds-of-silence.mp3").play();
 
 $.getJSON("sched.json?4", function (data) {
     sched = data;
@@ -40,8 +40,12 @@ $.getJSON("sched.json?4", function (data) {
         class_update_loop_timeout = class_update_loop(true);
 
         //set event listeners
-        $("#gear").click(function() {
-            $("#settings").modal("show");
+        $("#gearIcon").click(function() {
+            $("#settingsModal").modal("show");
+        });
+
+        $("#calenderIcon").click(function() {
+            $("#calenderModal").modal("show");
         });
 
         $("#notifySwitch").change(function () {
