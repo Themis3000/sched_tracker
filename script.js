@@ -15,7 +15,7 @@ ding_audio = new Audio("Ding-sound-effect.mp3");
 // unblock autoplay for the site.
 new Audio("2-seconds-of-silence.mp3").play();
 
-$.getJSON("sched.json?4", function (data) {
+$.getJSON("sched.json?5", function (data) {
     sched = data;
     $(function() {
         //create alias settings based on config
